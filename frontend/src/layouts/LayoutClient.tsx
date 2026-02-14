@@ -3,9 +3,9 @@ import Navbar  from "../components/clients/Navbar"
 
 const LayoutClient = ({ children }: { children : ReactNode}) => {
     return (
-        <div className="min-h-screen ">
+        <div className="min-h-screen">
             <Navbar />
-            <div className="container mx-auto">
+            <div className="container mx-auto ">
                 {children}
             </div>
         </div>

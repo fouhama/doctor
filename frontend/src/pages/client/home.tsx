@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import  homeImage from "../../../public/home-image.png"
+
 const Home = () => {
     return (
         <div className="h-full flex-col items-center gap-5  ">
@@ -10,7 +10,7 @@ const Home = () => {
                     <Link to="/get-reservation" className="bg-slate-200 font-bold  text-3xl py-3 px-5 rounded hover:bg-slate-300 w-fit">Rondez-vous</Link>
                 </div>
                 <div className="">
-                    <img src={homeImage} alt="image" />
+                    <img src="home-image.png" alt="image" />
                 </div>
             </div>
         </div>
