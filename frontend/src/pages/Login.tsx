@@ -5,9 +5,9 @@ const Login = () => {
     return (
         <div className="min-h-screen  flex flex-col justify-center items-center ">
             <Link to='/' className="absolute top-2.5 right-2.5 hover:border border-slate-300 cursor-pointer rounded-md p-4">
-              <IoHome className="text-2xl"/>
+                <IoHome className="text-2xl" />
             </Link>
-            <div className="border p-10 border-slate-300 shadow-2xs rounded-md  w-lg bg-white " >
+            <div className="border p-10 border-slate-300 shadow-md rounded-md  w-lg bg-white " >
 
                 <form className="flex flex-col gap-5">
                     <h2 className="text-3xl  font-bold text-center">Login</h2>
