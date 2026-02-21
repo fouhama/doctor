@@ -1,7 +1,9 @@
 import { useState } from "react"
 import Calendar from "react-calendar"
 import "react-calendar/dist/Calendar.css"
-
+import { useForm } from "react-hook-form"
+import { useMutation } from "@tanstack/react-query"
+import * as apiClinet from "../../api-client"
 const availableTimes = [
     "09:00",
     "10:00",
@@ -11,19 +13,49 @@ const availableTimes = [
     "16:00",
 ]
 
+
+export type FormSubmitType = {
+    firstName: string,
+    lastName: string,
+    phone: string,
+    idCart: string,
+    date: string,
+    time: string
+
+}
 const Appointment = () => {
-    const [date, setDate] = useState<Date | null>(new Date())
+    const { mutate } = useMutation({
+        mutationFn: apiClinet.addAppointment,
+        onSuccess: () => {
+            console.log("Rendez-vous enregistré ✔️")
+        },
+        onError: () => {
+            console.log("Erreur ❌")
+        }
+    })
+    const [date, setDate] = useState<Date | null>(null)
     const [time, setTime] = useState<string | null>(null)
 
     const handleDateChange = (value: Date) => {
         setDate(value)
+        setValue('date', value.toISOString())
         setTime(null) // reset time ila tbdel date
     }
 
-    // const appointmentDateTime =
-    //     date && time
-    //         ? new Date(`${date.toDateString()} ${time}`)
-    //         : null
+    const handleTimeSelect = (time: string) => {
+        setTime(time)
+        setValue('time', time)
+    }
+
+
+    const { register, handleSubmit, setValue
+
+        , formState: { errors } } = useForm<FormSubmitType>()
+    const onSubmit = handleSubmit(data => {
+        mutate(data)
+  
+
+    })
 
     return (
         <div className="py-30 -mt-17.5 min-h-screen px-2">
@@ -31,26 +63,34 @@ const Appointment = () => {
                 RENDEZ-VOUS
             </h2>
 
-            <form className="flex flex-col gap-5">
-
+            <form className="flex flex-col gap-5" onSubmit={onSubmit}>
+                <input type="hidden" {...register('date', { required: 'la date est requise' })} />
+                <input type="hidden" {...register('time', { required: 'le temps est nécessaire' })} />
                 {/* name */}
                 <div className="flex gap-5 flex-col md:flex-row">
                     <label className="w-full font-semibold text-gray-700">
                         Prénom
                         <input
+                            {...register('firstName', { required: "this field is required" })}
                             type="text"
                             placeholder="Prénom"
                             className="border rounded border-slate-300 outline-slate-500 p-3 font-normal w-full"
                         />
+
+                        {errors.firstName && (<span className="text-red-500 text-xs front-bold">{errors.firstName.message}</span>)}
                     </label>
 
                     <label className="w-full font-semibold text-gray-700">
                         Nom de famille
                         <input
+
+
+                            {...register('lastName', { required: "this field is required" })}
                             type="text"
                             placeholder="Nom de famille"
                             className="border rounded border-slate-300 outline-slate-500 p-3 font-normal w-full"
                         />
+                        {errors.lastName && (<span className="text-red-500 text-xs front-bold">{errors.lastName.message}</span>)}
                     </label>
                 </div>
 
@@ -59,19 +99,31 @@ const Appointment = () => {
                     <label className="w-full font-semibold text-gray-700">
                         Téléphone
                         <input
+                            {...register('phone', {
+                                required: "ce champ est requis",
+                                minLength: { value: 10, message: "numéro de téléphone incorrect" },
+                                maxLength: { value: 10, message: "numéro de téléphone incorrect" },
+                                pattern: {
+                                    value: /^[0-9]+$/,
+                                    message: "doit être un numéro"
+                                }
+                            })}
                             type="text"
                             placeholder="060000000"
                             className="border rounded border-slate-300 outline-slate-500 p-3 font-normal w-full"
                         />
+                        {errors.phone && (<span className="text-red-500 text-xs front-bold">{errors.phone.message}</span>)}
                     </label>
 
                     <label className="w-full font-semibold text-gray-700">
                         Numéro Carte nationale (ID)
                         <input
+                            {...register('idCart', { required: "this field is required" })}
                             type="text"
                             placeholder="ID4545"
                             className="border rounded border-slate-300 outline-slate-500 p-3 font-normal w-full"
                         />
+                        {errors.idCart && (<span className="text-red-500 text-xs front-bold">{errors.idCart.message}</span>)}
                     </label>
                 </div>
 
@@ -93,6 +145,7 @@ const Appointment = () => {
                                 (date.getDay() === 0 || date.getDay() === 6)
                             }
                         />
+                        {errors.date && (<span className="text-red-500 text-xs front-bold">{errors.date.message}</span>)}
                     </label>
 
                     {/* time */}
@@ -105,15 +158,16 @@ const Appointment = () => {
                                     <button
                                         type="button"
                                         key={t}
-                                        onClick={() => setTime(t)}
+                                        onClick={() => handleTimeSelect(t)}
                                         className={`px-4 py-2 rounded border transition cursor-pointer ${time === t
-                                                ? "bg-green-600 text-white"
-                                                : "bg-gray-200 hover:bg-gray-300"
+                                            ? "bg-green-600 text-white"
+                                            : "bg-gray-200 hover:bg-gray-300"
                                             }`}
                                     >
                                         {t}
                                     </button>
                                 ))}
+                                {errors.time && (<span className="text-red-500 text-xs front-bold">{errors.time.message}</span>)}
                             </div>
                         )}
 
@@ -134,9 +188,9 @@ const Appointment = () => {
                     >
                         Confirmer rendez-vous
                     </button>
-             </span>
+                </span>
 
-           
+
             </form>
         </div>
     )
