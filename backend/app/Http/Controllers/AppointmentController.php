@@ -30,4 +30,10 @@ class AppointmentController extends Controller
             ], 400);
         }
     }
+
+
+    function getTime (Request $request){
+        return response()->json($request->date);
+    }
+
 }

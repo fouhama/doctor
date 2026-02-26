@@ -4,6 +4,8 @@ import "react-calendar/dist/Calendar.css"
 import { useForm } from "react-hook-form"
 import { useMutation } from "@tanstack/react-query"
 import * as apiClinet from "../../api-client"
+
+import toast from 'react-hot-toast';
 const availableTimes = [
     "09:00",
     "10:00",
@@ -26,22 +28,40 @@ export type FormSubmitType = {
 const Appointment = () => {
  
 
-    const { mutate } = useMutation({
+    const { mutate , isPending } = useMutation({
         mutationFn: apiClinet.addAppointment,
         onSuccess: () => {
-            console.log("Rendez-vous enregistré ✔️")
+            toast.success("Rendez-vous enregistré ✔️")
+            reset()
+            setTime(null)
+            setDate(null)
         },
         onError: () => {
-            console.log("Erreur ❌")
+            toast.error("Erreur ❌")
+            
+        }
+    })
+
+    const getTime = useMutation({
+        mutationFn: apiClinet.getTimeExist,
+        onSuccess: () => {
+            toast.success("Sélectionnez l'heure ✔️")
+        },
+        onError: () => {
+            toast.error("Erreur ❌")
+            
         }
     })
     const [date, setDate] = useState<Date | null>(null)
     const [time, setTime] = useState<string | null>(null)
 
     const handleDateChange = (value: Date) => {
+        setTime(null) 
         setDate(value)
+        getTime.mutate(value)
         setValue('date', value.toISOString())
-        setTime(null) // reset time ila tbdel date
+        setValue('time', '')
+
     }
 
     const handleTimeSelect = (time: string) => {
@@ -52,7 +72,7 @@ const Appointment = () => {
 
     const { register, handleSubmit, setValue
 
-        , formState: { errors } } = useForm<FormSubmitType>()
+        , formState: { errors }, reset  } = useForm<FormSubmitType>()
     const onSubmit = handleSubmit(data => {
         mutate(data)
   
@@ -67,6 +87,7 @@ const Appointment = () => {
 
             <form className="flex flex-col gap-5" onSubmit={onSubmit}>
                 <input type="hidden" {...register('date', { required: 'la date est requise' })} />
+               
                 <input type="hidden" {...register('time', { required: 'le temps est nécessaire' })} />
                 {/* name */}
                 <div className="flex gap-5 flex-col md:flex-row">
@@ -151,7 +172,7 @@ const Appointment = () => {
                     </label>
 
                     {/* time */}
-                    <label className="w-full font-semibold text-gray-700 flex flex-col">
+                    <div className="w-full font-semibold text-gray-700 flex flex-col">
                         Heures
 
                         {date && (
@@ -174,21 +195,23 @@ const Appointment = () => {
                         )}
 
                         {/* result */}
-                        {date && time && (
+                        {date && time  && (
                             <p className="mt-4 font-medium text-green-700">
                                 Rendez-vous : {date.toLocaleDateString("fr-FR")} à {time}
                             </p>
                         )}
-                    </label>
+                    </div>
                 </div>
 
                 {/* submit */}
                 <span className="flex justify-end">
                     <button
                         type="submit"
-                        className="bg-blue-600 text-white p-3 rounded hover:bg-blue-700 transition w-fit font-bold cursor-pointer"
+                        className="bg-blue-600 text-white p-3 rounded hover:bg-blue-700 transition w-fit font-bold cursor-pointer disabled:bg-gray-300"
+                        disabled={isPending}
                     >
-                        Confirmer rendez-vous
+                        {isPending ? 'Confirmation...' : 'Confirmer rendez-vous'}
+                        
                     </button>
                 </span>
 

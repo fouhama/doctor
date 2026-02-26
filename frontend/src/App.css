@@ -1,5 +1,12 @@
 .bg-layout-doctor {
-    background-image: url('../public/wall-papier.jpg');
-    background-size: cover;
+    margin: 0;
+    min-height: 100vh;
+
+    background:
+        linear-gradient(120deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 40%),
+        linear-gradient(120deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0) 60%),
+        linear-gradient(120deg, #e6e6e6 0%, #dcdcdc 40%, #f2f2f2 100%);
+
+    background-size: 300px 300px, 500px 500px, cover;
 
 }

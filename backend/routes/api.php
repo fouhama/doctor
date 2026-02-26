@@ -6,3 +6,4 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::post('/add-appointment', [AppointmentController::class , 'store']);
+Route::post('/get-time-exist', [AppointmentController::class , 'getTime']);
