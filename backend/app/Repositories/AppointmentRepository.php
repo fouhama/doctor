@@ -17,5 +17,11 @@ class AppointmentRepository {
         return $appoitment;
     }
 
+    function getAll(){
+
+        $appoitments = Appointment::all();
+
+        return $appoitments;
+    }
 
 }

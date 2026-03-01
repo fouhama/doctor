@@ -17,10 +17,12 @@ export const addAppointment = async (fromAppointment: FormSubmitType) => {
 }
 
 export const getDateExist = async () => {
+   await getCsrfToken()
    const res = await api.post('/api/get-date-exist')
    return  res.data
 }
-export const getTimeExist = async (date :Date) => {
+export const getTimeExist = async (date: Date) => {
+   await getCsrfToken()
    const res = await api.post('/api/get-time-exist', {date})
    return  res.data
 }
