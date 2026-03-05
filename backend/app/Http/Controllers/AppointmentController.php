@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AppiontmentRequest;
+use App\Http\Requests\AppointmentRequest;
 use App\Repositories\AppointmentRepository;
 use Illuminate\Http\Request;
 
@@ -13,7 +13,7 @@ class AppointmentController extends Controller
     {
         $this->appointmentRep = $appointmentRep;
     }
-    public function store(AppiontmentRequest $request)
+    public function store(AppointmentRequest $request)
     {
         try {
             $appointment = $this->appointmentRep->create($request->all());

@@ -2,7 +2,6 @@ import { useState } from "react"
 import Calendar from "react-calendar"
 import "react-calendar/dist/Calendar.css"
 import { useForm } from "react-hook-form"
-import { useMutation } from "@tanstack/react-query"
 import * as apiClinet from "../../api-client"
 
 import toast from 'react-hot-toast';
@@ -27,41 +26,27 @@ export type FormSubmitType = {
 }
 const Appointment = () => {
  
-
-    const { mutate , isPending } = useMutation({
-        mutationFn: apiClinet.addAppointment,
-        onSuccess: () => {
-            toast.success("Rendez-vous enregistré ✔️")
-            reset()
-            setTime(null)
-            setDate(null)
-        },
-        onError: () => {
-            toast.error("Erreur ❌")
-            
-        }
-    })
-
-    const getTime = useMutation({
-        mutationFn: apiClinet.getTimeExist,
-        onSuccess: () => {
-            toast.success("Sélectionnez l'heure ✔️")
-        },
-        onError: () => {
-            toast.error("Erreur ❌")
-            
-        }
-    })
+    const [isPending, setIsPending] = useState(false);
+    const [isLoadingTime, setIsLoadingTime] = useState(false);
     const [date, setDate] = useState<Date | null>(null)
     const [time, setTime] = useState<string | null>(null)
 
-    const handleDateChange = (value: Date) => {
+    const handleDateChange = async (value: Date) => {
         setTime(null) 
         setDate(value)
-        getTime.mutate(value)
+        setIsLoadingTime(true);
+        
+        try {
+            await apiClinet.getTimeExist(value);
+            toast.success("Sélectionnez l'heure ✔️")
+        } catch {
+            toast.error("Erreur ❌")
+        } finally {
+            setIsLoadingTime(false);
+        }
+        
         setValue('date', value.toISOString())
         setValue('time', '')
-
     }
 
     const handleTimeSelect = (time: string) => {
@@ -70,13 +55,24 @@ const Appointment = () => {
     }
 
 
-    const { register, handleSubmit, setValue
-
-        , formState: { errors }, reset  } = useForm<FormSubmitType>()
-    const onSubmit = handleSubmit(data => {
-        mutate(data)
-  
-
+    const { register, handleSubmit, setValue, formState: { errors }, reset  } = useForm<FormSubmitType>()
+    
+    const onSubmit = handleSubmit(async (data) => {
+        try {
+            setIsPending(true);
+            
+            await apiClinet.addAppointment(data);
+            
+            toast.success("Rendez-vous enregistré ✔️")
+            reset()
+            setTime(null)
+            setDate(null)
+        } catch (error: unknown) {
+            const errorMessage = (error as { response?: { data?: { message?: string } } })?.response?.data?.message || "Erreur ❌";
+            toast.error(errorMessage);
+        } finally {
+            setIsPending(false);
+        }
     })
 
     return (
@@ -208,7 +204,7 @@ const Appointment = () => {
                     <button
                         type="submit"
                         className="bg-blue-600 text-white p-3 rounded hover:bg-blue-700 transition w-fit font-bold cursor-pointer disabled:bg-gray-300"
-                        disabled={isPending}
+                        disabled={isPending || isLoadingTime}
                     >
                         {isPending ? 'Confirmation...' : 'Confirmer rendez-vous'}
                         

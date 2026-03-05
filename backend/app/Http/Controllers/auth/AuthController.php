@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class loginController extends Controller
+class AuthController extends Controller
 {
     public function login(Request $request){
         $validation = $request->validate([
@@ -34,4 +34,36 @@ class loginController extends Controller
             ['message' => "Login success"]
         )->cookie('auth_token', $token, 60 *24 , '/', null,false, true);
     }
+
+    public  function logout (Request $request){
+        $user = $request->user();
+
+        // Delete all tokens for this user
+        if ($user) {
+            $user->tokens()->delete();
+        }
+
+        // Logout from session guard as well
+        Auth::guard('web')->logout();
+        
+        // Invalidate and regenerate session
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return response()->json([
+            'message' => 'Logout success'
+        ])->cookie('auth_token', '', -1, '/', null, false, true)
+            ->cookie('laravel-session', '', -1, '/', null, false, true);
+    }
+
+    public  function checkToken(Request $request){
+        $user = $request->user();
+        
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+        
+        return response()->json($user);
+    }
+
 }

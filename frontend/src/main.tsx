@@ -10,12 +10,12 @@ const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <DoctorContext>
-        <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <DoctorContext>
           <App />
           <Toaster />
-        </QueryClientProvider>
-      </DoctorContext>
+        </DoctorContext>
+      </QueryClientProvider>
     </BrowserRouter>
   </StrictMode>,
 )

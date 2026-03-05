@@ -5,20 +5,26 @@ import Login from "./pages/Login"
 import LayoutDoctor from "./layouts/LayoutDoctor"
 import "./App.css"
 import Appointment from "./pages/client/Appointment"
-import { useDoctorContext } from "./context/DoctorContext"
 import Dashboard from "./pages/doctor/Dashboard"
+import ProtectedRoute from "./routes/ProtectedRoute"
+import PublicRoute from "./routes/PublicRoute"
 function App() {
-  const { isLoggedIn } = useDoctorContext()
+
   return (
     <Routes>
       <Route index element={<LayoutClient> <Home /> </LayoutClient>} />
       <Route path="/appointment" element={<LayoutClient> <Appointment /> </LayoutClient>} />
-      <Route path="/login" element={<LayoutDoctor> <Login /> </LayoutDoctor>} />
-      {isLoggedIn && (
-        <>
-          <Route path="/dashborad" element={<LayoutDoctor> <Dashboard /> </LayoutDoctor>} />
-        </>
-      )}
+
+      <Route path="/dashboard" element={
+        <ProtectedRoute>
+          <LayoutDoctor> <Dashboard /> </LayoutDoctor>
+        </ProtectedRoute>
+      } />
+      <Route path="/login" element={
+        <PublicRoute>
+          <LayoutDoctor> <Login /> </LayoutDoctor>
+        </PublicRoute>
+      } />
       <Route path="*" element={<LayoutClient> <Home /> </LayoutClient>} />
     </Routes>
   )
