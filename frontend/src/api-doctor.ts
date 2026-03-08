@@ -13,11 +13,11 @@ export const login = async(form :formLogin ) => {
 
 export const logout = async () => {
     const res = await api.post('/api/logout')
-    return res.data
+    return res
 }
 
-export const checkToken = async ()=>{
-    const res = await api.get('/api/check-token');
+export const getUser = async ()=>{
+    const res = await api.get('/api/user');
     return  res.data
 
 }

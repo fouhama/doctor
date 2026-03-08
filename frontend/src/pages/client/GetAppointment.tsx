@@ -24,7 +24,7 @@ export type FormSubmitType = {
     time: string
 
 }
-const Appointment = () => {
+const GetAppointment = () => {
  
     const [isPending, setIsPending] = useState(false);
     const [isLoadingTime, setIsLoadingTime] = useState(false);
@@ -217,4 +217,4 @@ const Appointment = () => {
     )
 }
 
-export default Appointment
+export default GetAppointment

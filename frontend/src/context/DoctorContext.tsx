@@ -19,7 +19,7 @@ const DoctorContext = ({ children }: { children: ReactNode }) => {
 
     const checkTokenStatus = useCallback(async () => {
         try {
-            const data = await apiDoctor.checkToken();
+            const data = await apiDoctor.getUser();
             setIsLoggedIn(!!data);
         } catch {
             setIsLoggedIn(false);

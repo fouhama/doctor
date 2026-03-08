@@ -1,4 +1,4 @@
-import type { FormSubmitType } from "./pages/client/Appointment"
+import type { FormSubmitType } from "./pages/client/GetAppointment"
 import api from "./api/axios"
 
 

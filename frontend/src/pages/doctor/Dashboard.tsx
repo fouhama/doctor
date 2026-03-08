@@ -1,8 +1,8 @@
 const Dashboard = () => {
     return (
-        <>
-            Dashboard
-        </>
+        <div className="my-10 container mx-auto">
+           sasaa
+        </div>
     )
 }
 export default Dashboard

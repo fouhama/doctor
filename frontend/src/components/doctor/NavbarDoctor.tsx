@@ -18,6 +18,9 @@ const NavbarDoctor = () => {
             
             await apiDoctor.logout();
             
+            // Clear the auth token from cookies
+            document.cookie = 'auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+            
             toast.success('Déconnexion réussie');
             
             // Check token to update isLoggedIn state
@@ -37,7 +40,7 @@ const NavbarDoctor = () => {
 
 
     return (
-        <nav className="p-4 flex justify-between items-center sticky top-0 px-10 bg-transparent shadow-2xs">
+        <nav className="p-4 flex justify-between items-center sticky top-0 px-10  shadow-2xs z-10 bg-white">
             <Link to={'/'} className="tracking-tighter text-3xl  font-bold text-slate-500">Doctor.com</Link>
 
             <span className="flex gap-2">
