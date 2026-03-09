@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AppointmentRequest;
 use App\Repositories\AppointmentRepository;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AppointmentController extends Controller
 {
@@ -36,4 +37,11 @@ class AppointmentController extends Controller
         return response()->json($request->date);
     }
 
+
+    function  getAppointments() :JsonResponse{
+
+        $appointments =   $this->appointmentRep->getAll(10);
+        return response()->json($appointments);
+      
+    }
 }

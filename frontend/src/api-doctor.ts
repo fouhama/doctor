@@ -21,3 +21,8 @@ export const getUser = async ()=>{
     return  res.data
 
 }
+
+export const getAppointemnts = async () => {
+    const res = await api.get('/api/get-apointments')
+    return res.data
+}

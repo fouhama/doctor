@@ -17,11 +17,20 @@ class AppointmentRepository {
         return $appoitment;
     }
 
-    function getAll(){
+    public function getAll($limit, $page = 1){
+        $total = Appointment::count();
+        $pages = ceil($total / $limit);
+        $skip = ($page - 1) * $limit;
+        
+        $appointments = Appointment::latest()->skip($skip)->take($limit)->get();
 
-        $appoitments = Appointment::all();
-
-        return $appoitments;
+        return [
+            'data' => $appointments,
+            'total' => $total,
+            'pages' => $pages,
+            'current_page' => $page
+        ];
     }
+
 
 }
