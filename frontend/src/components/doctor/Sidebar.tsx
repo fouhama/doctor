@@ -1,5 +1,6 @@
 import { MdDashboard } from "react-icons/md";
 import { MdOutlineStickyNote2 } from "react-icons/md";
+import { IoMdSettings } from "react-icons/io";
 import { Link } from "react-router-dom";
 const Sidebar = () => {
     return (
@@ -15,6 +16,12 @@ const Sidebar = () => {
                     <Link to='/appointment' className="tooltip">
                         <MdOutlineStickyNote2 size={30} />
                         <span className="tooltip-text">Rendez-vous</span>
+                    </Link>
+                </li>
+                <li className="cursor-pointer ">
+                    <Link to='/setting' className="tooltip">
+                        <IoMdSettings size={30} />
+                        <span className="tooltip-text">Paramètre</span>
                     </Link>
                 </li>
             </ul>

@@ -22,7 +22,12 @@ export const getUser = async ()=>{
 
 }
 
-export const getAppointemnts = async () => {
-    const res = await api.get('/api/get-apointments')
+export const getAppointemnts = async (size: number = 10, page: number = 1, search: string, date: string = "1") => {
+    const query =new URLSearchParams()
+    query.append('page', page.toString())
+    query.append('size', size.toString())
+    query.append('search', search)
+    query.append('dateAppointment', date)
+    const res = await api.get(`/api/get-apointments?${query.toString()}`)
     return res.data
 }
