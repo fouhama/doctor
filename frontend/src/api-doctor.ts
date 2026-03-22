@@ -1,5 +1,6 @@
 import { getCsrfToken } from "./api-client"
 import api from "./api/axios"
+import type { formStoreTime } from "./forms/StoreTime"
 type formLogin ={
     email :string,
     password:string
@@ -29,5 +30,11 @@ export const getAppointemnts = async (size: number = 10, page: number = 1, searc
     query.append('search', search)
     query.append('dateAppointment', date)
     const res = await api.get(`/api/get-apointments?${query.toString()}`)
+    return res.data
+}
+
+export const storeTime = async (formStoreTime: formStoreTime ) => {
+    // await getCsrfToken()
+    const res = await api.post('/api/store-time', formStoreTime)
     return res.data
 }

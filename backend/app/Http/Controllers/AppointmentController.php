@@ -9,6 +9,7 @@ use App\Repositories\TimeAppointmentRep;
 use Dflydev\DotAccessData\Data;
 use Exception;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\TryCatch;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AppointmentController extends Controller
@@ -39,6 +40,21 @@ class AppointmentController extends Controller
         }
     }
 
+    function storeTime(Request $request){
+        $request->validate([
+            'time' => "required|string|unique:time_appointments,time",
+            "person" => "required|integer"
+        ]);
+
+        try {
+            $time = $this->timeAppoint->addTime($request);
+            return response()->json($time, 201);
+
+        } catch (Exception $th) {
+            return  response()->json(["message"=> $th],500);
+        }
+
+    }
 
     function getTime (Request $request){
         return response()->json($request->date);

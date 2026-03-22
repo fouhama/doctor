@@ -11,7 +11,7 @@ class TimeAppointmentRep
     {
         $time =  ModelsTimeAppointment::create([
             'time' => $request->time,
-            'number_person_in_time' => $request->countPerson,
+            'number_person_in_time' => $request->person,
         ]);
 
         return $time;

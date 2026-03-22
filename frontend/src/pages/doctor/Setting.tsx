@@ -1,20 +1,8 @@
 
 import { CiPause1, CiEdit, CiTrash } from "react-icons/ci";
-import { FaCirclePlus } from "react-icons/fa6";
 import { Button } from "../../components/ui/button"
-import {
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "../../components/ui/dialog"
-import { Field, FieldGroup } from "../../components/ui/field"
-import { Input } from "../../components/ui/input"
-import { Label } from "../../components/ui/label"
+import {Dialog, DialogTrigger} from "../../components/ui/dialog"
+
 import {
     Accordion,
     AccordionContent,
@@ -22,6 +10,8 @@ import {
     AccordionTrigger,
 } from "../../components/ui/accordion"
 import { ButtonGroup } from "../../components/ui/button-group";
+import StoreTime from "../../forms/StoreTime";
+import { FaCirclePlus } from "react-icons/fa6";
 const Setting = () => {
 
     return (
@@ -41,38 +31,14 @@ const Setting = () => {
                             <AccordionContent>
                                 <div >
                                     <Dialog>
-                                        <form>
-                                            <div className="flex justify-end mt-2" >
 
-                                                <DialogTrigger asChild >
-                                                    <Button variant="outline"><FaCirclePlus /> Ajouter</Button>
-                                                </DialogTrigger>
-                                            </div>
-                                            <DialogContent className="sm:max-w-sm">
-                                                <DialogHeader>
-                                                    <DialogTitle>Ajouter du temps</DialogTitle>
-                                                    <DialogDescription>
-                                                        ajouter du temps avec combien des personnes dans ce temps
-                                                    </DialogDescription>
-                                                </DialogHeader>
-                                                <FieldGroup>
-                                                    <Field>
-                                                        <Label htmlFor="temps">Temps</Label>
-                                                        <Input id="temps" name="time" defaultValue="09:00" type="time" />
-                                                    </Field>
-                                                    <Field>
-                                                        <Label htmlFor="countPerson">Nombre des personnes</Label>
-                                                        <Input id="countPerson" name="cont_persons" defaultValue={3} type="number" />
-                                                    </Field>
-                                                </FieldGroup>
-                                                <DialogFooter>
-                                                    <DialogClose asChild>
-                                                        <Button variant="outline">Annuler</Button>
-                                                    </DialogClose>
-                                                    <Button type="submit">Ajouter</Button>
-                                                </DialogFooter>
-                                            </DialogContent>
-                                        </form>
+                                        <div className="flex justify-end mt-2" >
+
+                                            <DialogTrigger asChild >
+                                                <Button variant="outline"><FaCirclePlus /> Ajouter</Button>
+                                            </DialogTrigger>
+                                        </div>
+                                        <StoreTime />
                                     </Dialog>
                                     <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 p-5">
                                         <span className="border border-slate-300 rounded-xl overflow-hidden font-semibold flex justify-between items-center ps-3">
@@ -82,7 +48,7 @@ const Setting = () => {
                                                 <Button variant="outline" className="border-none rounded-none" title="Suspendu"> <CiPause1 /></Button>
                                                 <Button variant="outline" className="border-none rounded-none" title="Supprimer"> <CiTrash /></Button>
                                             </ButtonGroup>
-                                       
+
                                         </span>
 
 
@@ -106,7 +72,7 @@ const Setting = () => {
                         </AccordionItem>
                     </Accordion>
 
-              
+
                 </div>
             </div>
 

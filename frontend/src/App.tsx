@@ -35,10 +35,12 @@ function App() {
         path="/login"
         element={
           <PublicRoute>
-            <Login />
+            <LayoutDoctor />
           </PublicRoute>
         }
-      />
+      >
+        <Route path="/login" element={<Login />} />
+      </Route>
 
       {/* 404 */}
       <Route path="*" element={<LayoutClient><Home /></LayoutClient>} />

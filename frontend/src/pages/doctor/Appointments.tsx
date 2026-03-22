@@ -149,7 +149,7 @@ const Appointments = () => {
                                     </div>
                                 </td>
                             </tr>
-                        )) : (!loading && (<tr> <td colSpan={7} className="text-center py-3 font-bold"> Aucune donnée ! </td></tr>))}
+                        )) : (!loading && (<tr><td colSpan={7} className="text-center py-3 font-bold"> Aucune donnée ! </td></tr>))}
                     </tbody>
                     {!loading && (
                         <tfoot >
