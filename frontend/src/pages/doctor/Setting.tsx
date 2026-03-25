@@ -1,7 +1,7 @@
 
 import { CiPause1, CiEdit, CiTrash } from "react-icons/ci";
 import { Button } from "../../components/ui/button"
-import {Dialog, DialogTrigger} from "../../components/ui/dialog"
+import { Dialog, DialogTrigger } from "../../components/ui/dialog"
 
 import {
     Accordion,
@@ -12,7 +12,27 @@ import {
 import { ButtonGroup } from "../../components/ui/button-group";
 import StoreTime from "../../forms/StoreTime";
 import { FaCirclePlus } from "react-icons/fa6";
+import { getTimes } from '../../api-doctor'
+import { useEffect, useState } from "react";
+import { RotatingLines } from "react-loader-spinner";
+import { FaPlay } from "react-icons/fa";
+export type TypeGetTimeDoctor = {
+    id: number,
+    time: string,
+    number_person_in_time: number,
+    status: number
+}
 const Setting = () => {
+    const [dataTime, setDataTime] = useState<TypeGetTimeDoctor[]>([])
+    const [loading, setloading] = useState<boolean>(true)
+    useEffect(() => {
+        async function handleTime() {
+            setloading(true)
+            setDataTime(await getTimes())
+            setloading(false)
+        }
+        handleTime()
+    }, [])
 
     return (
         <div className="my-3  w-full">
@@ -40,19 +60,42 @@ const Setting = () => {
                                         </div>
                                         <StoreTime />
                                     </Dialog>
-                                    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 p-5">
-                                        <span className="border border-slate-300 rounded-xl overflow-hidden font-semibold flex justify-between items-center ps-3">
-                                            <span className="text-nowrap">9:00 (3 Personnes)</span>
-                                            <ButtonGroup className="">
-                                                <Button variant="outline" className="border-none rounded-none" title="Modifier"><CiEdit /></Button>
-                                                <Button variant="outline" className="border-none rounded-none" title="Suspendu"> <CiPause1 /></Button>
-                                                <Button variant="outline" className="border-none rounded-none" title="Supprimer"> <CiTrash /></Button>
-                                            </ButtonGroup>
 
-                                        </span>
+                                    {
+                                        !loading ? (
+
+                                            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 p-5">
+                                                {dataTime.map((time, index) => (
+                                                    <span className="border border-slate-300 rounded-xl overflow-hidden font-semibold flex justify-between items-center ps-3" key={index}>
+                                                        <span className="text-nowrap">{time.time} (3 Personnes)</span>
+                                                        <ButtonGroup className="">
+                                                            <Button variant="outline" className="border-none rounded-none" title="Modifier"><CiEdit /></Button>
+                                                            <Button variant="outline" className="border-none rounded-none" title={time.status == 1 ? "Suspendu" : "Active"}> {time.status == 1 ? (<CiPause1 />) : (<FaPlay />)} </Button>
+                                                            <Button variant="outline" className="border-none rounded-none" title="Supprimer"> <CiTrash /></Button>
+                                                        </ButtonGroup>
+
+                                                    </span>
+                                                ))}
+
+                                            </div>
+                                        ) : (
+                                            <div className="flex justify-center  w-full">
+                                                <RotatingLines
+                                                    visible={true}
+                                                    height="50"
+                                                    width="50"
+                                                    color="grey"
+                                                    strokeWidth="5"
+                                                    animationDuration="0.75"
+                                                    ariaLabel="rotating-lines-loading"
+                                                />
+                                            </div>
+                                        )
+                                    }
 
 
-                                    </div>
+
+
                                 </div>
                             </AccordionContent>
                         </AccordionItem>

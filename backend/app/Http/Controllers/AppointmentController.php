@@ -83,4 +83,14 @@ class AppointmentController extends Controller
         }
 
     }
+
+
+    function getTimesDoctor(){
+        try{
+            $times = $this->timeAppoint->getTimes();
+            return response()->json($times);
+        }catch(Exception $e){
+            return response()->json(["message" => $e->getMessage()], 500);
+        }
+    }
 }

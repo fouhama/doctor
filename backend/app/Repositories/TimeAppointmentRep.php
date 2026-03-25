@@ -16,4 +16,9 @@ class TimeAppointmentRep
 
         return $time;
     }
+
+    public function getTimes(){
+        $times = ModelsTimeAppointment::orderBy("time")->get(["id", "time", 'number_person_in_time' , "status" ]);
+        return $times;
+    }
 }

@@ -1,6 +1,7 @@
 import { getCsrfToken } from "./api-client"
 import api from "./api/axios"
 import type { formStoreTime } from "./forms/StoreTime"
+import type { TypeGetTimeDoctor } from "./pages/doctor/Setting"
 type formLogin ={
     email :string,
     password:string
@@ -36,5 +37,10 @@ export const getAppointemnts = async (size: number = 10, page: number = 1, searc
 export const storeTime = async (formStoreTime: formStoreTime ) => {
     // await getCsrfToken()
     const res = await api.post('/api/store-time', formStoreTime)
+    return res.data
+}
+
+export const getTimes = async (): Promise<TypeGetTimeDoctor[]> => {
+    const res = await api.get('/api/get-time-doctor');
     return res.data
 }

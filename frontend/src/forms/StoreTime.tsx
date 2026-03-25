@@ -89,7 +89,7 @@ const StoreTime = () => {
                     <DialogClose asChild>
                         <Button variant="outline">Annuler</Button>
                     </DialogClose>
-                    {/* hidden close button used to programmatically close the dialog on success */}
+         
                     <DialogClose asChild>
                         <button ref={closeBtnRef} style={{ display: 'none' }} aria-hidden />
                     </DialogClose>
